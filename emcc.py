@@ -1739,6 +1739,9 @@ There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR P
       # requires JS legalization
       shared.Settings.LEGALIZE_JS_FFI = 0
 
+    if shared.Settings.USE_PTHREADS or shared.Settings.RELOCATABLE or shared.Settings.ASYNCIFY_LAZY_LOAD_CODE:
+      shared.Settings.EXTERNAL_MEMORY = 1
+
     if shared.Settings.WASM_BIGINT:
       shared.Settings.LEGALIZE_JS_FFI = 0
 

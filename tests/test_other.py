@@ -6714,14 +6714,14 @@ int main() {
       self.assertFileContents(filename, data)
 
   @parameterized({
-    'O0': ([],      [], ['waka'],   847), # noqa
-    'O1': (['-O1'], [], ['waka'],   286), # noqa
-    'O2': (['-O2'], [], ['waka'],   245), # noqa
+    'O0': ([],      [], ['waka'],   789), # noqa
+    'O1': (['-O1'], [], ['waka'],   264), # noqa
+    'O2': (['-O2'], [], ['waka'],   263), # noqa
     # in -O3, -Os and -Oz we metadce, and they shrink it down to the minimal output we want
-    'O3': (['-O3'], [], [],          62), # noqa
-    'Os': (['-Os'], [], [],          62), # noqa
-    'Oz': (['-Oz'], [], [],          62), # noqa
-    'Os_mr': (['-Os', '-s', 'MINIMAL_RUNTIME'], [], [], 62), # noqa
+    'O3': (['-O3'], [], [],          74), # noqa
+    'Os': (['-Os'], [], [],          74), # noqa
+    'Oz': (['-Oz'], [], [],          74), # noqa
+    'Os_mr': (['-Os', '-s', 'MINIMAL_RUNTIME'], [], [], 74), # noqa
   })
   def test_metadce_minimal(self, *args):
     self.run_metadce_test('minimal.c', *args)
@@ -6741,15 +6741,15 @@ int main() {
     self.run_metadce_test('hello_libcxx.cpp', *args, check_funcs=False)
 
   @parameterized({
-    'O0': ([],      [], ['waka'], 12726), # noqa
-    'O1': (['-O1'], [], ['waka'],  3511), # noqa
-    'O2': (['-O2'], [], ['waka'],  2106), # noqa
+    'O0': ([],      [], ['waka'], 11689), # noqa
+    'O1': (['-O1'], [], ['waka'],  2422), # noqa
+    'O2': (['-O2'], [], ['waka'],  2060), # noqa
     'O3': (['-O3'], [], [],        1792), # noqa; in -O3, -Os and -Oz we metadce
-    'Os': (['-Os'], [], [],        1783), # noqa
+    'Os': (['-Os'], [], [],        1781), # noqa
     'Oz': (['-Oz'], [], [],        1777), # noqa
     # finally, check what happens when we export nothing. wasm should be almost empty
     'export_nothing':
-          (['-Os', '-s', 'EXPORTED_FUNCTIONS=[]'],    [], [],     43), # noqa
+          (['-Os', '-s', 'EXPORTED_FUNCTIONS=[]'],    [], [],     55), # noqa
     # we don't metadce with linkable code! other modules may want stuff
     # TODO(sbc): Investivate why the number of exports is order of magnitude
     # larger for wasm backend.

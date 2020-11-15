@@ -1630,6 +1630,16 @@ var ABORT_ON_WASM_EXCEPTIONS = 0;
 // Implies STANDALONE_WASM.
 var PURE_WASI = 0;
 
+// Set to 1 to define the WebAssembly.Memory object outside of the wasm
+// module.  By default the wasm module defines the memory and exports
+// it to JavaScript.
+// Use of the following settings will enable this settings since they
+// depend on being able to define the memory in JavaScript:
+// - USE_PTHREADS
+// - RELOCATABLE
+// - ASYNCIFY_LAZY_LOAD_CODE
+var EXTERNAL_MEMORY = 0;
+
 //===========================================
 // Internal, used for testing only, from here
 //===========================================

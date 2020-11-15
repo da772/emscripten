@@ -325,15 +325,16 @@ if (typeof SharedArrayBuffer === 'undefined' || typeof Atomics === 'undefined') 
 #endif
 #endif
 
-#if STANDALONE_WASM
-#if ASSERTIONS
-// In standalone mode, the wasm creates the memory, and the user can't provide it.
-assert(!Module['wasmMemory']);
-#endif // ASSERTIONS
-#else // !STANDALONE_WASM
+#if EXTERNAL_MEMORY
 // In non-standalone/normal mode, we create the memory here.
 #include "runtime_init_memory.js"
-#endif // !STANDALONE_WASM
+#else // EXTERNAL_MEMORY
+#if ASSERTIONS
+// If memory is defined in wasm, the user can't provide it.
+assert(!Module['wasmMemory'], 'Use of `wasmMemory` detected.  Use -s EXTERNAL_MEMORY to define wasmMemory externally');
+assert(INITIAL_MEMORY == {{{INITIAL_MEMORY}}}, 'Detected runtime INITIAL_MEMORY setting.  Use -s EXTERNAL_MEMORY to define wasmMemory dynamically');
+#endif // ASSERTIONS
+#endif // EXTERNAL_MEMORY
 
 #include "runtime_init_table.js"
 #include "runtime_stack_check.js"
@@ -832,6 +833,18 @@ function createWasm() {
 #endif
 
     Module['asm'] = exports;
+
+#if !EXTERNAL_MEMORY
+    wasmMemory = Module['asm']['memory'];
+#if ASSERTIONS
+    assert(wasmMemory);
+    assert(wasmMemory.buffer.byteLength === {{{ INITIAL_MEMORY }}});
+#endif
+    updateGlobalBufferAndViews(wasmMemory.buffer);
+#endif
+#if !MEM_INIT_IN_WASM
+    runMemoryInitializer();
+#endif
 
 #if !RELOCATABLE
     wasmTable = Module['asm']['__indirect_function_table'];

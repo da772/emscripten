@@ -4,8 +4,11 @@
  * SPDX-License-Identifier: MIT
  */
 
-// Create the main memory. (Note: this isn't used in STANDALONE_WASM mode since the wasm
-// memory is created in the wasm, not in JS.)
+// Create the wasm memory. (Note: this only applies if EXTERNAL_MEMORY is defined)
+#if !EXTERNAL_MEMORY
+assert(false, "should be be included when EXTERNAL_MEMORY is set");
+#endif
+
 #if USE_PTHREADS
 if (ENVIRONMENT_IS_PTHREAD) {
   wasmMemory = Module['wasmMemory'];
